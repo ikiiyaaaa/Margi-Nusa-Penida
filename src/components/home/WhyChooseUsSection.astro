@@ -1,0 +1,62 @@
+---
+import SectionHeading from '../shared/SectionHeading.astro';
+import { useTranslations } from '../../i18n/utils';
+import { Icon } from 'astro-icon/components';
+
+const { lang = 'id' } = Astro.props;
+const t = useTranslations(lang as any);
+
+const facilities = [
+  {
+    title: t('why.f1_title'),
+    desc: t('why.f1_desc'),
+    icon: 'lucide:car'
+  },
+  {
+    title: t('why.f2_title'),
+    desc: t('why.f2_desc'),
+    icon: 'lucide:ship'
+  },
+  {
+    title: t('why.f3_title'),
+    desc: t('why.f3_desc'),
+    icon: 'lucide:utensils'
+  },
+  {
+    title: t('why.f4_title'),
+    desc: t('why.f4_desc'),
+    icon: 'lucide:compass'
+  },
+  {
+    title: t('why.f5_title'),
+    desc: t('why.f5_desc'),
+    icon: 'lucide:bed'
+  },
+  {
+    title: t('why.f6_title'),
+    desc: t('why.f6_desc'),
+    icon: 'lucide:sparkles'
+  }
+];
+---
+
+<section class="py-24 bg-gray-50">
+  <div class="container mx-auto px-4 lg:px-8">
+    <SectionHeading 
+      title={t('why.title')} 
+      subtitle={t('why.tag')} 
+    />
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 max-w-6xl mx-auto">
+      {facilities.map((item) => (
+        <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+          <div class="w-14 h-14 bg-ocean-50 rounded-xl flex items-center justify-center mb-6 text-ocean-600 group-hover:bg-ocean-600 group-hover:text-white transition-colors duration-300">
+            <Icon name={item.icon} class="w-7 h-7 text-blue-500 group-hover:text-white transition-colors" />
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
+          <p class="text-gray-600 leading-relaxed font-light">{item.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

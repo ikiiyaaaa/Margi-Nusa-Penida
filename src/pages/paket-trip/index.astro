@@ -1,0 +1,142 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import SectionHeading from '../../components/shared/SectionHeading.astro';
+import { packages } from '../../data/packages';
+
+
+const categories = [
+  { id: 'all', label: 'ALL' },
+  { id: 'penida-trip', label: 'PENIDA TRIP' },
+  { id: 'tirta-yatra', label: 'TIRTA YATRA' },
+  { id: 'mix-trip', label: 'MIX TRIP' },
+];
+---
+
+<MainLayout title="Paket Trip">
+  <div class="py-24 container mx-auto px-4 lg:px-8">
+    <SectionHeading 
+      title="Choose Your Adventure" 
+      subtitle="Paket Trip Margi Nusa Penida" 
+    />
+
+    <!-- Filter Buttons (Like the reference image) -->
+    <div class="flex flex-wrap justify-center items-center gap-3 mt-12 mb-16">
+      {categories.map((cat, index) => (
+        <button 
+          class={`filter-btn px-6 py-2.5 rounded-full font-bold text-sm tracking-wide transition-all duration-300 ${index === 0 ? 'bg-ocean-500 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+          data-filter={cat.id}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- Package Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 gap-y-20 max-w-7xl mx-auto items-stretch" id="package-grid">
+      {packages.map(pkg => (
+        <div class={`package-card h-full relative rounded-3xl bg-white border ${pkg.featured ? 'border-ocean-500 shadow-2xl shadow-ocean-500/20 scale-105 z-10' : 'border-gray-100 shadow-xl hover:shadow-2xl'} overflow-hidden transition-all duration-300 flex flex-col`} data-category={pkg.category}>
+          
+          {pkg.featured && (
+            <div class="absolute top-0 inset-x-0 bg-ocean-500 text-white text-xs font-bold uppercase tracking-widest py-2 text-center z-20">
+              Most Popular
+            </div>
+          )}
+          
+          <div class="h-64 relative overflow-hidden">
+            <img src={pkg.image} alt={pkg.name} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 text-white text-left">
+              <span class="inline-block px-2 py-1 mb-2 text-[10px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-md rounded-md">
+                {pkg.category.replace('-', ' ')}
+              </span>
+              <h3 class="text-3xl font-bold font-['Poppins'] mb-1">{pkg.name}</h3>
+              <p class="text-ocean-200 font-medium">{pkg.pax}</p>
+            </div>
+          </div>
+          
+          <div class="p-8 flex-grow flex flex-col">
+            <div class="mb-6 pb-6 border-b border-gray-100">
+              <div class="text-3xl font-bold text-gray-900 mb-1">{pkg.price}</div>
+              <p class="text-sm text-gray-500">All-inclusive package price</p>
+            </div>
+            
+            <ul class="space-y-4 mb-8 flex-grow">
+              {pkg.destinations.map(dest => (
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-ocean-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span class="text-gray-700">{dest}</span>
+                </li>
+              ))}
+            </ul>
+            
+            <div class="flex gap-3 mt-auto">
+              <a href={`/paket-trip/${pkg.id}`} class={`flex-1 py-3 px-2 rounded-xl text-center font-bold text-xs uppercase tracking-wide transition-all ${pkg.featured ? 'bg-white text-ocean-600 border border-ocean-100' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
+                Lihat Detail
+              </a>
+              <a href={`https://wa.me/6285117480447?text=Halo Margi Nusa Penida, saya tertarik dengan ${pkg.name}.`} target="_blank" class={`flex-1 py-3 px-2 rounded-xl text-center font-bold text-xs uppercase tracking-wide transition-all ${pkg.featured ? 'bg-ocean-600 hover:bg-ocean-700 text-white shadow-xl shadow-ocean-600/30' : 'bg-gray-900 hover:bg-gray-800 text-white shadow-xl shadow-gray-900/20'}`}>
+                Book Now
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Empty State Component -->
+    <div id="empty-state" class="hidden py-12 text-center">
+      <p class="text-gray-500 text-lg">Belum ada paket untuk kategori ini.</p>
+    </div>
+
+  </div>
+</MainLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const packageCards = document.querySelectorAll('.package-card');
+    const emptyState = document.getElementById('empty-state');
+    
+    // Set active button styles based on Tailwind classes you provided
+    const activeClasses = ['bg-ocean-500', 'text-white', 'shadow-md'];
+    const inactiveClasses = ['bg-gray-200', 'text-gray-700', 'hover:bg-gray-300'];
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Reset all buttons to inactive
+        filterBtns.forEach(b => {
+          b.classList.remove(...activeClasses);
+          b.classList.add(...inactiveClasses);
+        });
+        
+        // Set clicked button to active
+        btn.classList.remove(...inactiveClasses);
+        btn.classList.add(...activeClasses);
+        
+        // Get category to filter
+        const filter = btn.getAttribute('data-filter');
+        let visibleCount = 0;
+        
+        // Filter packages
+        packageCards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || filter === category) {
+            // we use style.display to hide/show, also manipulating flex/grid child properties if needed
+            (card as HTMLElement).style.display = 'flex';
+            visibleCount++;
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+        
+        // Show/hide empty state
+        if (visibleCount === 0 && emptyState) {
+          emptyState.classList.remove('hidden');
+        } else if (emptyState) {
+          emptyState.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>

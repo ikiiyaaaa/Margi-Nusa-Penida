@@ -1,0 +1,53 @@
+---
+import { useTranslations } from '../../i18n/utils';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+const { lang = 'id' } = Astro.props;
+const t = useTranslations(lang as any);
+const l = (path: string) => getRelativeLocaleUrl(lang as any, path);
+---
+
+<section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+  <!-- Dynamic Background Placeholder (can be replaced with image later) -->
+  <div class="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800 z-0">
+    <div class="absolute inset-0 opacity-40 mix-blend-overlay bg-[url('https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center"></div>
+    <div class="absolute inset-0 bg-black/30"></div>
+  </div>
+
+  <div class="container relative z-10 px-4 lg:px-8 max-w-5xl mx-auto text-center translate-y-[-2rem]">
+    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-sm font-medium tracking-wide uppercase mb-6 animate-fade-in-up">
+      <span class="w-2 h-2 rounded-full bg-sunset-500 animate-pulse"></span>
+      {t('hero.badge')}
+    </span>
+    
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold font-['Poppins'] text-white leading-[1.1] mb-6 drop-shadow-lg tracking-tight">
+      {t('hero.title')} <br class="hidden md:block"/>
+      <span class="text-white">Nusa Penida</span>
+    </h1>
+    
+    <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-md">
+      {t('hero.desc')}
+    </p>
+    
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href={l('/paket-trip')} class="w-full sm:w-auto px-8 py-4 bg-ocean-600 hover:bg-ocean-700 text-white font-semibold rounded-full shadow-lg shadow-ocean-600/30 transition-all duration-300 hover:-translate-y-1 group flex items-center justify-center gap-2 text-lg">
+        {t('hero.cta_trip')}
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+      <a href={l('/contact-us')} class="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-full backdrop-blur-md border border-white/30 transition-all duration-300 hover:-translate-y-1 text-lg">
+        {t('hero.cta_contact')}
+      </a>
+    </div>
+  </div>
+  
+  <!-- Scroll Down Indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce">
+    <a href="#about" aria-label="Scroll down">
+      <svg class="w-6 h-6 text-white/70 hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </a>
+  </div>
+</section>

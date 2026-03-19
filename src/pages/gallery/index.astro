@@ -1,0 +1,142 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import SectionHeading from '../../components/shared/SectionHeading.astro';
+
+const galleryItems = [
+  {
+    src: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Kelingking Beach',
+    desc: 'The iconic T-Rex shaped cliff of Nusa Penida with pristine white sand below.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Crystal Bay',
+    desc: 'Perfect spot for snorkeling, viewing spectacular coral reefs and vibrant sunsets.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1588880628359-25f0ad0869a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Angel\'s Billabong',
+    desc: 'A spectacular rock formation and natural infinity pool on the coastline.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Broken Beach',
+    desc: 'An incredible arched tunnel in the cliffs allowing the ocean to flow into a pool.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1621685122971-70068a865b1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Diamond Beach',
+    desc: 'Stunning white sandy beach surrounded by magnificent karst cliff shapes.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Atuh Beach',
+    desc: 'A hidden beach isolated by giant green cliffs and rock formations.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Goa Giri Putri',
+    desc: 'A massive limestone cave temple situated halfway up a mountain.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1582200888200-a6e2e5033481?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Teletubbies Hill',
+    desc: 'Rolling green hills that literally look like the landscape from Teletubbies.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1624027725287-293623ec2878?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Manta Point',
+    desc: 'Swim gracefully alongside majestic Manta Rays in this popular dive spot.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1546950462-23c2d4310d54?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Peguyangan Waterfall',
+    desc: 'Famous for its blue stairs leading down the cliffside to a scenic coastal waterfall.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1558273614-1e0fcf88cb43?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Tembeling Beach',
+    desc: 'A magical natural pool deep in the jungle leading down to a quiet beach.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1596404921606-d7667d712ce8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+    title: 'Suwehan Beach',
+    desc: 'A pristine untouched beach resembling a private paradise island.'
+  }
+];
+---
+
+<MainLayout title="Gallery">
+  <div class="py-32 container mx-auto px-4 lg:px-8">
+    <div class="text-center mb-16 max-w-2xl mx-auto">
+      <SectionHeading 
+        title="Our Gallery" 
+        subtitle="Memories & Moments" 
+      />
+      <p class="text-gray-500 mt-4 text-lg">
+        Click on any photo to flip the card and reveal more information about the destination.
+      </p>
+    </div>
+
+    <!-- Grid 4 Kolom di layat Desktop -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+      {galleryItems.map((item) => (
+        <div class="perspective-1000 w-full h-[350px] cursor-pointer gallery-card group">
+          <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d shadow-xl shadow-gray-200/50 rounded-3xl">
+            
+            <!-- Sisi Depan (Foto) -->
+            <div class="absolute inset-0 backface-hidden rounded-3xl overflow-hidden bg-gray-100">
+              <img src={item.src} alt={item.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <!-- Gradient overlay to make it look premium -->
+              <div class="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-transparent to-transparent"></div>
+              <div class="absolute bottom-6 left-6 text-white text-left max-w-full pr-6">
+                <h3 class="text-2xl font-bold font-['Poppins'] tracking-tight truncate">{item.title}</h3>
+                <p class="text-sm font-medium text-white/80 mt-1 flex items-center gap-1 group-hover:text-white transition-colors">
+                  Hover to see details    
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+                  </svg>
+                </p>
+              </div>
+            </div>
+
+            <!-- Sisi Belakang (Informasi Flipbook) -->
+            <div class="absolute inset-0 backface-hidden rotate-y-180 rounded-3xl bg-gradient-to-br from-ocean-600 to-ocean-800 text-white p-8 flex flex-col justify-center text-center items-center shadow-lg border border-ocean-500/30">
+              <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-6">
+                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold font-['Poppins'] mb-4">{item.title}</h3>
+              <p class="text-ocean-100 leading-relaxed font-light text-sm">
+                {item.desc}
+              </p>
+            </div>
+
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  /* Base CSS untuk 3D Flip Animasi / Flipbook */
+  .perspective-1000 {
+    perspective: 1000px; /* Jarak perspektif untuk efek 3D */
+  }
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  /* Menggunakan hover state bawaan group dari Tailwind */
+  div.group:hover .card-inner {
+    transform: rotateY(180deg);
+  }
+</style>

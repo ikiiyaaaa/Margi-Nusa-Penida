@@ -1,0 +1,53 @@
+---
+import SectionHeading from '../shared/SectionHeading.astro';
+import { useTranslations } from '../../i18n/utils';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+interface Props {
+  lang?: string;
+}
+
+const { lang = 'id' } = Astro.props;
+const t = useTranslations(lang as any);
+const l = (path: string) => getRelativeLocaleUrl(lang as any, path);
+
+const images = [
+  'https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1588880628359-25f0ad0869a4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+  'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
+];
+---
+
+<section class="py-24 bg-gray-50">
+  <div class="container mx-auto px-4 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div class="max-w-2xl text-left">
+        <span class="inline-block py-1 px-3 rounded-full bg-ocean-50 text-ocean-600 text-sm font-semibold tracking-wide uppercase mb-3 border border-ocean-100 shadow-sm">
+          {t('gallery.preview_tag')}
+        </span>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-['Poppins'] text-gray-900 leading-tight">
+          {t('gallery.preview_title')}
+        </h2>
+      </div>
+      <a href={l('/gallery')} class="hidden md:inline-flex items-center justify-center px-6 py-3 bg-white border border-gray-200 text-gray-900 font-semibold rounded-full hover:border-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300">
+        {t('gallery.preview_cta')}
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      {images.map((src, index) => (
+        <div class={`relative group overflow-hidden rounded-2xl ${index === 0 || index === 3 ? 'md:col-span-2 md:row-span-2 h-[300px] md:h-[624px]' : 'h-[300px]'}`}>
+          <img src={src} alt="Nusa Penida Gallery" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" />
+          <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
+        </div>
+      ))}
+    </div>
+    
+    <div class="mt-8 text-center md:hidden">
+      <a href={l('/gallery')} class="inline-flex items-center justify-center px-6 py-3 bg-white border border-gray-200 text-gray-900 font-semibold rounded-full hover:border-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300 w-full sm:w-auto">
+        {t('gallery.preview_cta')}
+      </a>
+    </div>
+  </div>
+</section>

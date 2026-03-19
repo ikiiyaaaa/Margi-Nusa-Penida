@@ -1,0 +1,27 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import HeroSection from '../../components/home/HeroSection.astro';
+import AboutPreviewSection from '../../components/home/AboutPreviewSection.astro';
+import WhyChooseUsSection from '../../components/home/WhyChooseUsSection.astro';
+import PopularPackagesSection from '../../components/home/PopularPackagesSection.astro';
+import GalleryPreviewSection from '../../components/home/GalleryPreviewSection.astro';
+import ContactSection from '../../components/home/ContactSection.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'id' } },
+    { params: { lang: 'en' } },
+  ];
+}
+
+const { lang } = Astro.params;
+---
+
+<MainLayout title={lang === 'id' ? 'Beranda' : 'Home'} lang={lang}>
+  <HeroSection lang={lang} />
+  <AboutPreviewSection lang={lang} />
+  <WhyChooseUsSection lang={lang} />
+  <PopularPackagesSection lang={lang} />
+  <GalleryPreviewSection lang={lang} />
+  <ContactSection lang={lang} />
+</MainLayout>

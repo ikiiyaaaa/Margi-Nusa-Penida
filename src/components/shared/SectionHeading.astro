@@ -1,0 +1,21 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  centered?: boolean;
+}
+
+const { title, subtitle, centered = true } = Astro.props;
+---
+
+<div class={`mb-12 ${centered ? 'text-center' : 'text-left'}`}>
+  {subtitle && (
+    <span class="inline-block py-1 px-3 rounded-full bg-ocean-50 text-ocean-600 text-sm font-semibold tracking-wide uppercase mb-3 border border-ocean-100 shadow-sm">
+      {subtitle}
+    </span>
+  )}
+  <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-['Poppins'] text-gray-900 leading-tight">
+    {title}
+  </h2>
+  <div class={`h-1 w-20 bg-ocean-500 rounded-full mt-4 ${centered ? 'mx-auto' : ''}`}></div>
+</div>

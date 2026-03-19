@@ -1,0 +1,80 @@
+---
+import SectionHeading from '../shared/SectionHeading.astro';
+import { packages } from '../../data/packages';
+import { useTranslations } from '../../i18n/utils';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+const { lang = 'id' } = Astro.props;
+const t = useTranslations(lang as any);
+const l = (path: string) => getRelativeLocaleUrl(lang as any, path);
+
+// Pick the first 3 packages for the home page or specific IDs
+const displayPackages = packages.filter(p => ['paket-a', 'paket-b', 'paket-c'].includes(p.id));
+---
+
+<section class="py-24 bg-white">
+  <div class="container mx-auto px-4 lg:px-8">
+    <SectionHeading 
+      title={t('packages.title')} 
+      subtitle={t('packages.subtitle')} 
+    />
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-16 max-w-7xl mx-auto items-stretch">
+      {displayPackages.map(pkg => (
+        <div class={`relative rounded-3xl bg-white border ${pkg.featured ? 'border-ocean-500 shadow-2xl shadow-ocean-500/20 scale-105 z-10' : 'border-gray-100 shadow-xl hover:shadow-2xl'} overflow-hidden transition-all duration-300 flex flex-col`}>
+          
+          {pkg.featured && (
+            <div class="absolute top-0 inset-x-0 bg-ocean-500 text-white text-xs font-bold uppercase tracking-widest py-2 text-center z-20">
+              {t('packages.popular')}
+            </div>
+          )}
+          
+          <div class="h-64 relative overflow-hidden">
+            <img src={pkg.image} alt={pkg.name[lang as 'id' | 'en']} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 text-white text-left">
+              <h3 class="text-3xl font-bold font-['Poppins'] mb-1">{pkg.name[lang as 'id' | 'en']}</h3>
+              <p class="text-ocean-200 font-medium">{pkg.pax}</p>
+            </div>
+          </div>
+          
+          <div class="p-8 flex-grow flex flex-col">
+            <div class="mb-6 pb-6 border-b border-gray-100">
+              <div class="text-3xl font-bold text-gray-900 mb-1">{pkg.price}</div>
+              <p class="text-sm text-gray-500">{t('packages.all_inclusive')}</p>
+            </div>
+            
+            <ul class="space-y-4 mb-8 flex-grow">
+              {pkg.destinations.map(dest => (
+                <li class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-ocean-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span class="text-gray-700">{dest}</span>
+                </li>
+              ))}
+            </ul>
+            
+            <div class="flex gap-3 mt-auto">
+              <a href={l(`/paket-trip/${pkg.id}`)} class={`flex-1 py-3 px-2 rounded-xl text-center font-bold text-xs uppercase tracking-wide transition-all ${pkg.featured ? 'bg-white text-ocean-600 border border-ocean-100' : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}>
+                {t('packages.more')}
+              </a>
+              <a href={`https://wa.me/6285117480447?text=Halo Margi Nusa Penida, saya tertarik dengan ${pkg.name[lang as 'id' | 'en']}.`} target="_blank" class={`flex-1 py-3 px-2 rounded-xl text-center font-bold text-xs uppercase tracking-wide transition-all ${pkg.featured ? 'bg-ocean-600 hover:bg-ocean-700 text-white shadow-xl shadow-ocean-600/30' : 'bg-gray-900 hover:bg-gray-800 text-white shadow-xl shadow-gray-900/20'}`}>
+                Book Now
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href={l('/paket-trip')} class="inline-flex items-center gap-2 text-ocean-600 font-bold hover:text-ocean-700 transition-colors group">
+        Lihat Semua Paket
+        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

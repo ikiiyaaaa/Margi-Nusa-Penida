@@ -1,0 +1,67 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { useTranslations } from '../../i18n/utils';
+
+const { lang = 'id' } = Astro.props;
+const t = useTranslations(lang as any);
+
+// Helper to get localized URLs
+const l = (path: string) => getRelativeLocaleUrl(lang, path);
+
+// For the language switcher links:
+const currentPathWithoutLang = Astro.url.pathname.replace(/^\/(id|en)/, '') || '/';
+const idUrl = getRelativeLocaleUrl('id', currentPathWithoutLang);
+const enUrl = getRelativeLocaleUrl('en', currentPathWithoutLang);
+
+const isID = lang === 'id';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300">
+  <div class="container mx-auto px-4 lg:px-8">
+    <div class="flex items-center justify-between h-24">
+      
+      <!-- Logo -->
+      <a href={l('/')} class="flex items-center">
+        <img src="/favicon.svg" alt="Margi Nusa Penida Logo" class="h-16 md:h-20 w-auto" />
+      </a>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:flex items-center gap-8">
+        <ul class="flex items-center gap-8 text-sm font-medium text-gray-700">
+          <li><a href={l('/')} class="hover:text-ocean-600 transition-colors duration-200">{t('nav.home')}</a></li>
+          <li><a href={l('/paket-trip')} class="hover:text-ocean-600 transition-colors duration-200">{t('nav.packages')}</a></li>
+          <li><a href={l('/about-us')} class="hover:text-ocean-600 transition-colors duration-200">{t('nav.about')}</a></li>
+          <li><a href={l('/gallery')} class="hover:text-ocean-600 transition-colors duration-200">{t('nav.gallery')}</a></li>
+          <li><a href={l('/contact-us')} class="hover:text-ocean-600 transition-colors duration-200">{t('nav.contact')}</a></li>
+        </ul>
+        <div class="flex items-center gap-4">
+          <!-- Language Switcher -->
+          <div class="flex items-center bg-gray-100 rounded-full p-1 border border-gray-200">
+            <a href={idUrl} class={`px-3 py-1 text-xs font-bold rounded-full transition-all uppercase ${isID ? 'bg-white shadow-sm text-ocean-600' : 'text-gray-400 hover:text-gray-600'}`}>ID</a>
+            <a href={enUrl} class={`px-3 py-1 text-xs font-bold rounded-full transition-all uppercase ${!isID ? 'bg-white shadow-sm text-ocean-600' : 'text-gray-400 hover:text-gray-600'}`}>EN</a>
+          </div>
+          
+          <a href={l('/contact-us')} class="px-5 py-2.5 bg-ocean-600 hover:bg-ocean-700 text-white text-sm font-semibold rounded-full shadow-md shadow-ocean-500/30 transition-all duration-200 hover:-translate-y-0.5">
+            {t('nav.book')}
+          </a>
+        </div>
+      </nav>
+
+      <!-- Mobile Menu & Lang -->
+      <div class="flex md:hidden items-center gap-4">
+        <!-- Language Switcher (Mobile) -->
+        <div class="flex items-center bg-gray-100 rounded-full p-1 border border-gray-200">
+          <a href={idUrl} class={`px-2.5 py-1 text-[10px] font-bold rounded-full transition-all uppercase ${isID ? 'bg-white shadow-sm text-ocean-600' : 'text-gray-400 hover:text-gray-600'}`}>ID</a>
+          <a href={enUrl} class={`px-2.5 py-1 text-[10px] font-bold rounded-full transition-all uppercase ${!isID ? 'bg-white shadow-sm text-ocean-600' : 'text-gray-400 hover:text-gray-600'}`}>EN</a>
+        </div>
+
+        <button class="p-2 text-gray-600 focus:outline-none" aria-label="Toggle Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
